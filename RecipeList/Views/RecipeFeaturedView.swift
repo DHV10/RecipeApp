@@ -9,13 +9,14 @@ import SwiftUI
 
 struct RecipeFeaturedView: View {
     @EnvironmentObject var model:RecipeModel
+    @State var isShow = false
     var body: some View {
        
         VStack(alignment: .leading, spacing:0) {
             
             Text("Featured Recipes")
                 .bold()
-                .padding(.leading , 20)
+                .padding(.leading )
                 .padding(.top, 40)
                 .font(.largeTitle)
             
@@ -27,22 +28,29 @@ struct RecipeFeaturedView: View {
                         //loop only to recipes í featured
                         if model.recipes[index].featured {
                             
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
+                            Button(action: {
+                                self.isShow = true
+                            }, label : {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.white)
+                                    VStack {
+                                        Image(model.recipes[index].image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+        //                                    .scaledToFit()
+                                            .clipped()
+                                        Text(model.recipes[index].name)
+                                            .padding(5)
+                                    }
                                     
-                                
-                                VStack {
-                                    Image(model.recipes[index].image)
-                                        .resizable()
-    //                                    .scaledToFit()
-                                        .clipped()
-                                    Text(model.recipes[index].name)
-                                        .padding(5)
                                 }
-                                
-                            }
-                            .frame(width: geo.size.width - 40, height: geo.size.height - 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            })
+                            .buttonStyle(PlainButtonStyle())
+                            .sheet(isPresented: $isShow, content: {
+                                RecipeDetailView(recipe : model.recipes[index])
+                            })
+                            .frame(width: geo.size.width - 40, height: geo.size.height - 100, alignment: .center)
                             .cornerRadius(15)
                             .shadow(color: Color.black.opacity(0.6), radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: -5, y: 10)
                             
@@ -64,10 +72,9 @@ struct RecipeFeaturedView: View {
                 Text("Highlights")
                     .font(.headline)
                 Text("Healthy, Hearty")
-                    .padding(5)
             }
             
-            .padding(.leading)
+            .padding([.leading, .bottom])
             
         }
     }
