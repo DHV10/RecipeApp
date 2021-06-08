@@ -19,7 +19,7 @@ struct RecipeFeaturedView: View {
                 .bold()
                 .padding(.leading )
                 .padding(.top, 40)
-                .font(.largeTitle)
+                .font(Font.custom("Avenir Heavy", size: 35))
             
             GeometryReader { geo in
                 //tab view for featured recipes
@@ -43,6 +43,7 @@ struct RecipeFeaturedView: View {
                                             .clipped()
                                         Text(model.recipes[index].name)
                                             .padding(5)
+                                            .font(Font.custom("Avenir", size: 15))
                                     }
                                     
                                 }
