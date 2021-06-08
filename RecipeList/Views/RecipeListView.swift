@@ -11,7 +11,7 @@ struct RecipeListView: View {
     
     //    @ObservedObject  var model = RecipeModel()
     @EnvironmentObject var model:RecipeModel
-    
+    @State private var isShowingSettings: Bool = false
     var body: some View {
         
         NavigationView {
@@ -53,8 +53,22 @@ struct RecipeListView: View {
                 }
             }
 //            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            .navigationBarItems(
+            trailing:
+                Button(action: {
+                    isShowingSettings = true
+                }) {
+                    Image(systemName: "person")
+                }
+                .sheet(isPresented : $isShowingSettings) {
+                    SettingsView()
+                }
+            )
+
             .padding(.leading)
-            .navigationBarHidden(true)
+            .padding(.top)
+            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+//            .navigationBarHidden(true)
         }
         
         

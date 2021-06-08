@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct RecipeListApp: App {
+    @AppStorage("isOnboarding") var isOnboarding: Bool = true
     var body: some Scene {
         WindowGroup {
             RecipeTabView()
