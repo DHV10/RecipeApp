@@ -35,8 +35,14 @@ struct RecipeListView: View {
                                             .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                             .clipped()
                                             .cornerRadius(8)
-                                        Text(r.name)
-                                            .foregroundColor(.black)
+                                        VStack(alignment: .leading) {
+                                            Text(r.name)
+                                                .bold()
+                                                .font(.title3)
+                                                .foregroundColor(.black)
+                                            RecipeHighlights(highlights: r.highlights)
+                                                .foregroundColor(.black)
+                                        }
                                     }
                                 
                                 })
