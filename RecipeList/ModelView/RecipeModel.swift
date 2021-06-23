@@ -9,10 +9,18 @@ import Foundation
 
 class RecipeModel: ObservableObject {
     @Published var recipes = [Recipe]()
+    @Published var categories = Set<String>()
+    @Published var selectedCategory: String?
     
     init() {
         //get data from data sevices
         self.recipes = DataSevice.getLocalData()
+        //get categories to a Set
+        self.categories = Set(self.recipes.map { r in
+            return r.category
+        })
+        //add "all recipes"
+        self.categories.update(with: Constants.defaultList)
         
     }
     

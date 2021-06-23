@@ -12,11 +12,21 @@ struct RecipeListView: View {
     //    @ObservedObject  var model = RecipeModel()
     @EnvironmentObject var model:RecipeModel
     @State private var isShowingSettings: Bool = false
+    
+    private var title: String {
+        if model.selectedCategory == nil || model.selectedCategory == Constants.defaultList {
+            return "All Recipes"
+        }
+        else {
+            return model.selectedCategory!
+        }
+        
+    }
     var body: some View {
         
         NavigationView {
             VStack(alignment: .leading) {
-                Text("All Recipes")
+                Text(title)
                     .bold()
                     .padding(.top, 40)
                     .font(Font.custom("Avenir Heavy", size: 35))
@@ -25,50 +35,53 @@ struct RecipeListView: View {
                     LazyVStack(alignment: .leading) {
                         ForEach(model.recipes){ r in
                             
-                            NavigationLink(
-                                destination: RecipeDetailView(recipe: r),
-                                label: {
-                                    HStack {
-                                        Image(r.image)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                            .clipped()
-                                            .cornerRadius(8)
-                                        VStack(alignment: .leading) {
-                                            Text(r.name)
-                                                .bold()
-                                                .font(Font.custom("Avenir Heavy", size: 18))
-                                                .foregroundColor(.black)
-                                            RecipeHighlights(highlights: r.highlights)
-                                                .font(Font.custom("Avenir ", size: 15))
-                                                .foregroundColor(.black)
-                                        }
-                                    }
+                            if model.selectedCategory == nil || model.selectedCategory == Constants.defaultList || model.selectedCategory != nil && r.category == model.selectedCategory {
                                 
-                                })
+                                NavigationLink(
+                                    destination: RecipeDetailView(recipe: r),
+                                    label: {
+                                        HStack {
+                                            Image(r.image)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                                .clipped()
+                                                .cornerRadius(8)
+                                            VStack(alignment: .leading) {
+                                                Text(r.name)
+                                                    .bold()
+                                                    .font(Font.custom("Avenir Heavy", size: 18))
+                                                    .foregroundColor(.black)
+                                                RecipeHighlights(highlights: r.highlights)
+                                                    .font(Font.custom("Avenir ", size: 15))
+                                                    .foregroundColor(.black)
+                                            }
+                                        }
+                                        
+                                    })
+                            }
                         }
                     }
-
+                    
                 }
             }
-//            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            //            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .navigationBarItems(
-            trailing:
-                Button(action: {
-                    isShowingSettings = true
-                }) {
-                    Image(systemName: "person")
-                }
-                .sheet(isPresented : $isShowingSettings) {
-                    SettingsView()
-                }
+                trailing:
+                    Button(action: {
+                        isShowingSettings = true
+                    }) {
+                        Image(systemName: "person")
+                    }
+                    .sheet(isPresented : $isShowingSettings) {
+                        SettingsView()
+                    }
             )
-
+            
             .padding(.leading)
             .padding(.top)
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-//            .navigationBarHidden(true)
+            //            .navigationBarHidden(true)
         }
         
         
